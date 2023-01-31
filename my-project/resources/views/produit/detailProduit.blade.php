@@ -1,5 +1,4 @@
-@extends('base')
-@section('content')
+<x-app-layout>
 <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="css/produit/css" rel="stylsheet">
 <div class="album py-5 bg-light">
@@ -26,4 +25,5 @@
         </div>
       </div>
     </div>
-@endsection
+</x-app-layout>
+

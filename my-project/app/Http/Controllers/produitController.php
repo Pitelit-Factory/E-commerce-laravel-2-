@@ -8,11 +8,8 @@ use App\Models\produit;
 class produitController extends Controller
 {
 
-    public function indexProduits(){
-        $produits = produit::all();
-        return view('index', ['produits' => $produits]);
-    }
-    public function produits(){
+    
+    public function allproduits(){
         $produit = produit::all();
         return view('produit/allProduit', ['produits' => $produit]);
     }

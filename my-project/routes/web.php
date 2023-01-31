@@ -1,8 +1,11 @@
 <?php
 
-use App\Http\Controllers\clientController;
-use App\Http\Controllers\produitController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CartController;
+use Gloudemans\Shoppingcart\Facades\Cart;
+use App\Http\Controllers\logoutController;
+use App\Http\Controllers\produitController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,38 +21,44 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-/**
- * Route client
- */
-Route::get('/client', [clientController::class, 'client']);
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    /**
+     * Logout Route
+     */
+    Route::get('/logout', [logoutController::class, 'perform'])->name('logout.perform');
+    
+    /**
+     * Compte utilisateur
+     */
+    Route::get('/account', [ProfileController::class, 'account'])->name('account');
+    Route::post('/account/update', [ProfileController::class, 'updateAccount'])->name('account.update');
+
+});
 
 /**
  * Route Produit
  */
-Route::get('/produit', [produitController::class, 'produits']);
-Route::get('/produit/delete/{id}', [produitController::class, 'produitDelete'])->name('produit.delete');
-Route::get('/produit/update/{id}', [produitController::class, 'produitUpdate'])->name('produit.update');
-Route::post('/produit/store', [produitController::class, 'storeUpdate'])->name('produit.store');
-Route::get('produit/detail/{id}', [produitController::class, 'produitDetail']);
+Route::get('/produits', [produitController::class, 'allproduits'])->name('produits');
+Route::get('/produits/detail/{id}', [produitController::class, 'produitDetail']);
 
 /**
- * Route accueil
+ * Route Card
+ * 
  */
 
-Route::get('/index', [produitController::class, 'indexProduits']);
-/**
- * Route ajax
- */
-Route::get('/get-ajax', function () {
-    return view("get-ajax");
+Route::post('/produits/ajouter', [CartController::class, 'store'])->name('cart.store');
+Route::get('/videpanier', function () {
+    Cart::destroy();
 });
 
-Route::get('/send-ajax', function () {
-    return "ajax";
-});
-
-Route::get('/send-ajax', function () {
-    return "ajax";
-});
-
-
+Route::get('/panier', [CartController::class, 'index'])->name('cart.index');
+Route::get('/panier/delete/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
+require __DIR__.'/auth.php';

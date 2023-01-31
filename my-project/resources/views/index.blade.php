@@ -1,4 +1,3 @@
-@extends ('base')
 @section('content')
 <div>
     <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -79,7 +78,7 @@
       white-space: nowrap;
       -webkit-overflow-scrolling: touch;
     }
-    .card-body{
+    .card-body{ 
         text-align: center;
     }
   </style>

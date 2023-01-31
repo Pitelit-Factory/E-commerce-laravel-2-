@@ -44,13 +44,16 @@
           <a class="nav-link active" aria-current="page" href="/index">Accueil</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/produits">Inscriptions</a>
+          <a class="nav-link" href="/inscription">Inscriptions</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/produits">Connexions</a>
+          <a class="nav-link" href="/connexion">Connexions</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/produits">Contact</a>
+          <a class="nav-link" href="/contact">Contact</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/client">Nom client</a>
         </li>
       </ul>
       <form class="d-flex" role="search">
