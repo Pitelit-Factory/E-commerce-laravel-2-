@@ -2,6 +2,8 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
+    <div >Veuillez vous connectez</div>
+    </div>
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
@@ -44,4 +46,8 @@
             </x-primary-button>
         </div>
     </form>
+    <div style="margin-top:5rem">
+        <label>Pas de compte ?</label>
+        <a href="/register"><button href="/register" class="btn btn-primary">Inscrivez-vous</button></a>
+    </div>
 </x-guest-layout>

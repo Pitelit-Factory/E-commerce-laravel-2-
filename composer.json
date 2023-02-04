@@ -1,0 +1,6 @@
+{
+    "require": {
+        "laravel/ui": "^4.1",
+        "hardevine/shoppingcart": "^3.1"
+    }
+}
