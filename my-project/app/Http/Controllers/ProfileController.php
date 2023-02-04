@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Http\RedirectResponse;
+use App\Models\User;
+use App\Models\produit;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\View\View;
+use App\Http\Requests\ProfileUpdateRequest;
 
 class ProfileController extends Controller
 {
@@ -65,7 +68,122 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function updateA(Request $request){
+    public function updateAccount(Request $request){
+        $user = Auth::user();
+        return view('profile.accountUdpate',['user'=>$user]);
+    }
+    public function updateAccountValidate(Request $request){
+        $user = Auth::user();
+        $user->phone = $request->phone;
+        $user->adresse = $request->adresse;
+        $user->save();
+        return Redirect::route('account');
 
     }
+
+    /**
+     * ********************Admin*****************************
+     */
+
+     public function index(){
+        return view('admin.index');
+     }
+
+     /**
+      * ****Produit****
+      * 
+      */
+
+
+     public function produit(){
+        $produits = produit::all();
+        return view('admin.produit.produit', ['produits' => $produits]);
+     }
+
+     public function produitDelete($id){
+        produit::find($id)->delete();
+        return Redirect::route('admin.produit');
+     }
+
+     public function produitDetail($id){
+        $produit = produit::find($id);
+        return view('admin.produit.detail', ['produit' => $produit]);
+     }
+
+     public function produitEdit($id){
+        $produit = produit::find($id);
+        
+        return view('admin.produit.update', ['produit' => $produit]);
+     }
+
+     public function produitUpdate( Request $request, $id ){
+
+        produit::where('id', $id)->update($request->except('_token'));
+         
+        return Redirect::route('admin.produit');
+     }
+
+     public function produitAddEdit(){
+        return view('admin.produit.add');
+     }
+     public function produitAdd(Request $request){
+        $produit = new produit;
+        $produit->nom = $request->input("nom");
+        $produit->prix = $request->input("prix");
+        $produit->volume = $request->input("volume");
+        $produit->poids = $request->input("poids");
+        $produit->type = $request->input("type");
+        $produit->save();
+        return Redirect::route('admin.produit');
+
+     }
+
+     /**Client */
+     public function client(){
+        $users = User::all();
+        return view('admin.users.users', ['users' => $users]);
+     }
+
+     public function editClient($id){
+        $user = User::find($id);
+
+        return view('admin.users.editUser', ['user' => $user]);
+
+     }
+
+    public function updateClient(Request $request, $id){
+        User::where('id', $id)->update($request->except('_token'));
+        return Redirect::route('admin.client');
+    }
+
+    public function deleteClient($id){
+        User::find($id)->delete();
+        return Redirect::route('admin.users');
+    }
+
+    public function detailClient($id){
+        $user = User::find($id);
+
+        return view('admin.users.detail', ['user' => $user]);
+    }
+
+    public function addEditClient(){
+        return view('admin.users.add');
+    }
+
+    public function addClient(Request $request){
+        $client = new User;
+        $client->name = $request->input("name");
+        $client->email = $request->input("email");
+        $client->password = Hash::make($request->input("password"));
+        $client->phone = $request->input("phone");
+        $client->adresse = $request->input("adresse");
+        $client->nbCommande = $request->input("nbCommande");
+        $client->Role = $request->input("Role");
+        $client->save();
+        return Redirect::route('admin.users');
+
+    }
+
+
 }

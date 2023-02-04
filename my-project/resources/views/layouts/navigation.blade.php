@@ -24,6 +24,11 @@
                     <x-nav-link :href="route('account')" :active="request()->routeIs('account')">
                         {{__('Account')}}
                     </x-nav-link>
+                    @if(Auth::user()->Role == 1)
+                    <x-nav-link :href="route('admin.index')">
+                        {{__('Panel Admin')}}
+                    </x-nav-link>
+                    @endif
                     <x-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.index')">
                         Panier<span class="badge badge-pill badge-dark">{{Cart::count()}}</span>
                     </x-nav-link>

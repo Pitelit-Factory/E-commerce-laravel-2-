@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\commandeController;
+use App\Models\Commande;
 use App\Models\produit;
 use Illuminate\Http\Request;
 use Gloudemans\Shoppingcart\Facades\Cart;
@@ -37,10 +39,10 @@ class CartController extends Controller
     public function store(Request $request)
     {
         $product = produit::find($request->product_id);
-        
          Cart::add($product->id, $product->nom, 1,$product->prix )
          ->associate('App\produit');
-         return redirect()->route('produits')->with('sucess', 'Le produit à bien été ajouté.');
+
+        return redirect()->route('produits')->with('sucess', 'Le produit à bien été ajouté.');
     }
 
     /**
@@ -86,9 +88,7 @@ class CartController extends Controller
     public function destroy($id)
     {
         $cart = Cart::content()->where('rowId', $id);
-        if($cart->isNotEmpty()){
             Cart::remove($id);
-        }
         return redirect()->route('cart.index');
     }
 }
