@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\clientController;
 use App\Http\Controllers\commandeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
@@ -72,24 +73,25 @@ Route::get('/panier/delete/{id}', [CartController::class, 'destroy'])->name('car
  * ******************************Route Admin*********************************************
  */
 
- /**Produit */
 Route::get('/admin', [ProfileController::class, 'index'])->name('admin.index');
-Route::get('/admin/produit', [ProfileController::class, 'produit'])->name('admin.produit');
-Route::get('/admin/produit/delete/{id}', [ProfileController::class, 'produitDelete']);
-Route::get('/admin/produit/detail/{id}', [ProfileController::class, 'produitDetail']);
-Route::get('/admin/produit/edit/{id}', [ProfileController::class, 'produitEdit'])->name('admin.edit');
-Route::post('/admin/produit/update/{id}', [ProfileController::class, 'produitUpdate'])->name('admin.update');
-Route::get('/admin/produit/addEdit/', [ProfileController::class, 'produitAddEdit'])->name('admin.addEditProduit');
-Route::post('/admin/produit/add', [ProfileController::class, 'produitAdd'])->name('admin.update');
+
+/**Produit */
+Route::get('/admin/produit', [produitController::class, 'produit'])->name('admin.produit');
+Route::get('/admin/produit/delete/{id}', [produitController::class, 'produitDeleteAdmin']);
+Route::get('/admin/produit/detail/{id}', [produitController::class, 'produitDetailAdmin']);
+Route::get('/admin/produit/edit/{id}', [produitController::class, 'produitEdit'])->name('admin.edit');
+Route::post('/admin/produit/update/{id}', [produitController::class, 'produitUpdateAdmin'])->name('admin.update');
+Route::get('/admin/produit/addEdit/', [produitController::class, 'produitAddEdit'])->name('admin.addEditProduit');
+Route::post('/admin/produit/add', [produitController::class, 'produitAdd'])->name('admin.update');
 
 /**Client */
-Route::get('/admin/client', [ProfileController::class, 'client'])->name('admin.client');
-Route::get('/admin/user/edit/{id}', [ProfileController::class, 'editClient'])->name('admin.edit');
-Route::post('/admin/user/update/{id}', [ProfileController::class, 'updateClient'])->name('admin.update');
-Route::get('/admin/user/delete/{id}', [ProfileController::class, 'deleteClient'])->name('admin.delete');
-Route::get('/admin/user/detail/{id}', [ProfileController::class, 'detailClient'])->name('admin.detail');
-Route::get('/admin/user/addEdit', [ProfileController::class, 'addEditClient'])->name('admin.addEditClient');
-Route::post('/admin/user/add', [ProfileController::class, 'addClient'])->name('admin.add');
+Route::get('/admin/client', [clientController::class, 'clientAdmin'])->name('admin.client');
+Route::get('/admin/user/edit/{id}', [clientController::class, 'editClient'])->name('admin.edit');
+Route::post('/admin/user/update/{id}', [clientController::class, 'updateClient'])->name('admin.update');
+Route::get('/admin/user/delete/{id}', [clientController::class, 'deleteClient'])->name('admin.delete');
+Route::get('/admin/user/detail/{id}', [clientController::class, 'detailClient'])->name('admin.detail');
+Route::get('/admin/user/addEdit', [clientController::class, 'addEditClient'])->name('admin.addEditClient');
+Route::post('/admin/user/add', [clientController::class, 'addClient'])->name('admin.add');
 
 /**Commande */
 Route::get('/admin/commande/init', [commandeController::class, 'initCommande'])->name('admin.init');

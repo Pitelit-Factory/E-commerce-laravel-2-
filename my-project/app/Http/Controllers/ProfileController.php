@@ -89,55 +89,6 @@ class ProfileController extends Controller
         return view('admin.index');
      }
 
-     /**
-      * ****Produit****
-      * 
-      */
-
-
-     public function produit(){
-        $produits = produit::all();
-        return view('admin.produit.produit', ['produits' => $produits]);
-     }
-
-     public function produitDelete($id){
-        produit::find($id)->delete();
-        return Redirect::route('admin.produit');
-     }
-
-     public function produitDetail($id){
-        $produit = produit::find($id);
-        return view('admin.produit.detail', ['produit' => $produit]);
-     }
-
-     public function produitEdit($id){
-        $produit = produit::find($id);
-        
-        return view('admin.produit.update', ['produit' => $produit]);
-     }
-
-     public function produitUpdate( Request $request, $id ){
-
-        produit::where('id', $id)->update($request->except('_token'));
-         
-        return Redirect::route('admin.produit');
-     }
-
-     public function produitAddEdit(){
-        return view('admin.produit.add');
-     }
-     public function produitAdd(Request $request){
-        $produit = new produit;
-        $produit->nom = $request->input("nom");
-        $produit->prix = $request->input("prix");
-        $produit->volume = $request->input("volume");
-        $produit->poids = $request->input("poids");
-        $produit->type = $request->input("type");
-        $produit->save();
-        return Redirect::route('admin.produit');
-
-     }
-
      /**Client */
      public function client(){
         $users = User::all();

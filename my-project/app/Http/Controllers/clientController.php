@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\client;
 use Illuminate\Http\Request;
 use GuzzleHttp\Promise\Create;
-use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Session\Middleware\StartSession;
 
 class clientController extends Controller
 {
@@ -50,5 +53,54 @@ class clientController extends Controller
     public function account(){
         print_r($_SESSION['client']);
         // return view('/client/account', ['session' => $_SESSION['client']]);
+    }
+
+    /**
+     * *****Admin*****
+     */
+
+     public function clientAdmin(){
+        $users = User::all();
+        return view('admin.users.users', ['users' => $users]);
+     }
+
+     public function editClient($id){
+        $user = User::find($id);
+
+        return view('admin.users.editUser', ['user' => $user]);
+
+     }
+
+     public function updateClient(Request $request, $id){
+        User::where('id', $id)->update($request->except('_token'));
+        return Redirect::route('admin.client');
+    }
+
+    public function deleteClient($id){
+        User::find($id)->delete();
+        return Redirect::route('admin.users');
+    }
+
+    public function detailClient($id){
+        $user = User::find($id);
+
+        return view('admin.users.detail', ['user' => $user]);
+    }
+
+    public function addEditClient(){
+        return view('admin.users.add');
+    }
+
+    public function addClient(Request $request){
+        $client = new User;
+        $client->name = $request->input("name");
+        $client->email = $request->input("email");
+        $client->password = Hash::make($request->input("password"));
+        $client->phone = $request->input("phone");
+        $client->adresse = $request->input("adresse");
+        $client->nbCommande = $request->input("nbCommande");
+        $client->Role = $request->input("Role");
+        $client->save();
+        return Redirect::route('admin.users');
     }
 }
