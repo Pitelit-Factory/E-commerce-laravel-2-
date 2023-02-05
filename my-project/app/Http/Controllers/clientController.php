@@ -102,5 +102,5 @@ class clientController extends Controller
         $client->Role = $request->input("Role");
         $client->save();
         return Redirect::route('admin.users');
-    }
+    } 
 }
